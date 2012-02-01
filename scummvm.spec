@@ -41,7 +41,8 @@ flight-of-the-amazon-queen packages from non-free repository to play.
 		--mandir=%{_mandir} \
 		--datadir=%{_gamesdatadir} \
 		--enable-release \
-		--enable-verbose-build
+		--enable-verbose-build \
+		--enable-opengl
 
 %make
 
