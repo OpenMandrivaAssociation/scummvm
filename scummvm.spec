@@ -36,13 +36,13 @@ flight-of-the-amazon-queen packages from non-free repository to play.
 %build
 %global optflags %optflags -O3 -ffast-math
 %setup_compile_flags
-./configure	--prefix=%{_prefix} \
+./configure	--enable-verbose-build \
+		--prefix=%{_prefix} \
 		--bindir=%{_gamesbindir} \
 		--mandir=%{_mandir} \
 		--datadir=%{_gamesdatadir}
 
-#Don't want *alot* of warnings about multiline comments...
-%make VERBOSE_BUILD=1
+%make
 
 %install
 %makeinstall_std
