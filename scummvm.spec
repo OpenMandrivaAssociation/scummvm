@@ -36,8 +36,10 @@ flight-of-the-amazon-queen packages from non-free repository to play.
 %build
 #gw format string errors in 1.0.0
 %define Werror_cflags %nil
-./configure --prefix=%{_prefix} --bindir=%{_gamesbindir} --mandir=%{_mandir} \
-  --datadir=%{_gamesdatadir}
+./configure	--prefix=%{_prefix} \
+		--bindir=%{_gamesbindir} \
+		--mandir=%{_mandir} \
+		--datadir=%{_gamesdatadir}
 
 #Don't want *alot* of warnings about multiline comments...
 %make CXXFLAGS="%{optflags} -O3 -ffast-math -Wuninitialized -Wno-long-long -Wno-multichar -Wno-unknown-pragmas"
@@ -45,14 +47,12 @@ flight-of-the-amazon-queen packages from non-free repository to play.
 %install
 %makeinstall_std
 
-mkdir -p %{buildroot}%{_datadir}/applications
-cp dists/%{name}.desktop %{buildroot}%{_datadir}/applications
+install -m644 dists/%{name}.desktop -D %{buildroot}%{_datadir}/applications
 
-install -D -m 644 dists/maemo/scummvm48.png %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
-install -D -m 644 dists/maemo/scummvm64.png %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
-install -D -m 644 dists/motomagx/pep/scummvm_big_usr.png %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
-install -D -m 644 icons/scummvm.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
-
+install -m644 dists/maemo/scummvm48.png -D %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
+install -m644 dists/maemo/scummvm64.png -D %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
+install -m644 dists/motomagx/pep/scummvm_big_usr.png -D %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
+install -m644 icons/scummvm.svg -D %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
 mkdir -p %{buildroot}%{_datadir}/%{name}
 
@@ -65,4 +65,3 @@ mkdir -p %{buildroot}%{_datadir}/%{name}
 %{_datadir}/applications/%{name}.desktop
 %dir %{_datadir}/%{name}
 %{_datadir}/icons/hicolor/*/apps/%{name}.*
-
