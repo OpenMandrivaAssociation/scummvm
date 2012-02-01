@@ -1,6 +1,6 @@
 %define	name	scummvm
-%define version 1.4.0
-%define release %mkrel 2
+%define version 1.4.1
+%define release %mkrel 1
 %define Summary	An implementation of LucasArts's SCUMM interpreter
 
 Summary:	%{Summary}
