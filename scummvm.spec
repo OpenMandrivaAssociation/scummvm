@@ -31,9 +31,10 @@ be completeted yet. There are quite a few known bugs. Regardless of
 the bugs it is still possible to play some games all the way through
 to the end. Still other games do not load at all.
 
-Some games such as "Beneath A Steel Sky" and "Flight Of The Amazon Queen"
-have been released by their developers. Install beneath-a-steel-sky and
-flight-of-the-amazon-queen packages from non-free repository to play.
+Some games such as "Beneath A Steel Sky", "Flight Of The Amazon Queen"
+and "Drascula: The Vampire Strikes Back" have been released by their
+developers. Install beneath-a-steel-sky, flight-of-the-amazon-queen and
+drascula packages from non-free repository to play.
 
 %prep
 %setup -q
