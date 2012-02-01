@@ -1,18 +1,12 @@
-%define	name	scummvm
-%define version 1.4.1
-%define release %mkrel 1
-%define Summary	An implementation of LucasArts's SCUMM interpreter
-
-Summary:	%{Summary}
-Name:		%{name}
-Version:	%{version}
-Release:	%{release}
+Summary:	An implementation of LucasArts's SCUMM interpreter
+Name:		scummvm
+Version:	1.4.1
+Release:	%mkrel 1
 Source0:	http://prdownloads.sourceforge.net/scummvm/%{name}-%{version}.tar.bz2
 Patch0:		scummvm-1.2.0-dont-strip.patch
 License:	GPLv2+ and LGPLv2+
 Url:		http://scummvm.sourceforge.net/
 Group:		Games/Adventure
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 BuildRequires:	pkgconfig(sdl)
 BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	pkgconfig(mad)
@@ -49,9 +43,7 @@ flight-of-the-amazon-queen packages from non-free repository to play.
 %make CXXFLAGS="%{optflags} -O3 -ffast-math -Wuninitialized -Wno-long-long -Wno-multichar -Wno-unknown-pragmas"
 
 %install
-rm -rf %{buildroot} installed-docs
 %makeinstall_std
-mv %{buildroot}%{_datadir}/doc/%{name} installed-docs
 
 mkdir -p %{buildroot}%{_datadir}/applications
 cp dists/%{name}.desktop %{buildroot}%{_datadir}/applications
@@ -64,12 +56,8 @@ install -D -m 644 icons/scummvm.svg %{buildroot}%{_datadir}/icons/hicolor/scalab
 
 mkdir -p %{buildroot}%{_datadir}/%{name}
 
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
-%doc installed-docs/*
+%doc %{_docdir}/%{name}
 %{_gamesbindir}/*
 %{_mandir}/*/*
 %{_datadir}/pixmaps/%{name}.xpm
