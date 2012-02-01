@@ -47,7 +47,7 @@ flight-of-the-amazon-queen packages from non-free repository to play.
 %install
 %makeinstall_std
 
-install -m644 dists/%{name}.desktop -D %{buildroot}%{_datadir}/applications
+install -m644 dists/%{name}.desktop -D %{buildroot}%{_datadir}/applications/%{name}.desktop
 
 install -m644 dists/maemo/scummvm48.png -D %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
 install -m644 dists/maemo/scummvm64.png -D %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
