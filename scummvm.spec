@@ -42,7 +42,8 @@ flight-of-the-amazon-queen packages from non-free repository to play.
 		--datadir=%{_gamesdatadir} \
 		--enable-release \
 		--enable-verbose-build \
-		--enable-opengl
+		--enable-opengl \
+		--enable-all-engines
 %make NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf"
 
 %install
