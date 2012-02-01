@@ -36,11 +36,12 @@ flight-of-the-amazon-queen packages from non-free repository to play.
 %build
 %global optflags %optflags -O3 -ffast-math
 %setup_compile_flags
-./configure	--enable-verbose-build \
-		--prefix=%{_prefix} \
+./configure	--prefix=%{_prefix} \
 		--bindir=%{_gamesbindir} \
 		--mandir=%{_mandir} \
-		--datadir=%{_gamesdatadir}
+		--datadir=%{_gamesdatadir} \
+		--enable-release \
+		--enable-verbose-build
 
 %make
 
