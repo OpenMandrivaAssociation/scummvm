@@ -34,15 +34,15 @@ flight-of-the-amazon-queen packages from non-free repository to play.
 %apply_patches
 
 %build
-#gw format string errors in 1.0.0
-%define Werror_cflags %nil
+%global optflags %optflags -O3 -ffast-math
+%setup_compile_flags
 ./configure	--prefix=%{_prefix} \
 		--bindir=%{_gamesbindir} \
 		--mandir=%{_mandir} \
 		--datadir=%{_gamesdatadir}
 
 #Don't want *alot* of warnings about multiline comments...
-%make VERBOSE_BUILD=1 CXXFLAGS="%{optflags} -O3 -ffast-math -Wuninitialized -Wno-long-long -Wno-multichar -Wno-unknown-pragmas"
+%make VERBOSE_BUILD=1
 
 %install
 %makeinstall_std
