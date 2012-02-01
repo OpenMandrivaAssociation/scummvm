@@ -42,7 +42,7 @@ flight-of-the-amazon-queen packages from non-free repository to play.
 		--datadir=%{_gamesdatadir}
 
 #Don't want *alot* of warnings about multiline comments...
-%make CXXFLAGS="%{optflags} -O3 -ffast-math -Wuninitialized -Wno-long-long -Wno-multichar -Wno-unknown-pragmas"
+%make VERBOSE_BUILD=1 CXXFLAGS="%{optflags} -O3 -ffast-math -Wuninitialized -Wno-long-long -Wno-multichar -Wno-unknown-pragmas"
 
 %install
 %makeinstall_std
