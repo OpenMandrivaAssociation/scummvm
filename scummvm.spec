@@ -6,7 +6,7 @@ Group:		Games/Adventure
 License:	GPLv2+ and LGPLv2+
 Url:		http://scummvm.sourceforge.net/
 Source0:	http://garr.dl.sourceforge.net/project/scummvm/scummvm/%version/scummvm-%version.tar.bz2
-Patch0:		scummvm-1.2.0-dont-strip.patch
+Patch0:		scummvm-1.5.0-dont-strip.patch
 BuildRequires:	pkgconfig(sdl)
 BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	pkgconfig(mad)
@@ -45,11 +45,11 @@ drascula packages from non-free repository to play.
 		--enable-verbose-build \
 		--enable-opengl \
 		--enable-all-engines
-%make NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf"
+%make NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf" STRIP="true"
 
 %install
 %__rm -rf %{buildroot}
-%makeinstall_std
+%makeinstall_std STRIP="true"
 
 %__install -m644 dists/%{name}.desktop -D %{buildroot}%{_datadir}/applications/%{name}.desktop
 
