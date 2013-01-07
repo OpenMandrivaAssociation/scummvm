@@ -1,12 +1,12 @@
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
-Version:	1.4.1
-Release:	%mkrel 2
-Source0:	http://prdownloads.sourceforge.net/scummvm/%{name}-%{version}.tar.bz2
-Patch0:		scummvm-1.2.0-dont-strip.patch
+Version:	1.5.0
+Release:	%mkrel 1
+Group:		Games/Adventure
 License:	GPLv2+ and LGPLv2+
 Url:		http://scummvm.sourceforge.net/
-Group:		Games/Adventure
+Source0:	http://prdownloads.sourceforge.net/scummvm/%{name}-%{version}.tar.bz2
+Patch0:		scummvm-1.2.0-dont-strip.patch
 BuildRequires:	pkgconfig(sdl)
 BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	pkgconfig(mad)
@@ -64,7 +64,6 @@ drascula packages from non-free repository to play.
 %__rm -rf %{buildroot}
 
 %files
-%defattr(-,root,root)
 %doc %{_docdir}/%{name}
 %{_gamesbindir}/*
 %{_mandir}/*/*
@@ -73,37 +72,3 @@ drascula packages from non-free repository to play.
 %{_datadir}/applications/%{name}.desktop
 %dir %{_datadir}/%{name}
 %{_datadir}/icons/hicolor/*/apps/%{name}.*
-
-
-%changelog
-* Fri Feb 03 2012 Andrey Bondrov <abondrov@mandriva.org> 1.4.1-2mdv2012.0
-+ Revision: 770988
-- Update description and revert some recent changes for better rpm4 compatibility
-
-* Wed Feb 01 2012 Per Øyvind Karlsen <peroyvind@mandriva.org> 1.4.1-1
-+ Revision: 770533
-- enable all engines
-- fix so that nasm uses dwarf debug format as debugedit doesn't support stab
-- enable opengl
-- enable release mode
-- link with %%ldflags
-- make build verbose
-- cleanup spec
-- use pkgconfig() deps
-
-  + Götz Waschk <waschk@mandriva.org>
-    - update package description to mention drascula
-    - new version
-
-* Mon Nov 21 2011 Andrey Bondrov <abondrov@mandriva.org> 1.4.0-2
-+ Revision: 732094
-- Spec cleanup and description update
-
-* Wed Nov 16 2011 Götz Waschk <waschk@mandriva.org> 1.4.0-1
-+ Revision: 731120
-- new version
-
-* Thu Jul 28 2011 Götz Waschk <waschk@mandriva.org> 1.3.1-1
-+ Revision: 692056
-- import scummvm
-
