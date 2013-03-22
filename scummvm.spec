@@ -5,7 +5,7 @@ Release:	1
 Group:		Games/Adventure
 License:	GPLv2+ and LGPLv2+
 Url:		http://scummvm.sourceforge.net/
-Source0:	http://garr.dl.sourceforge.net/project/scummvm/scummvm/%version/scummvm-%version.tar.bz2
+Source0:	http://garr.dl.sourceforge.net/project/scummvm/scummvm/%{version}/scummvm-%{version}.tar.bz2
 Patch0:		scummvm-1.5.0-dont-strip.patch
 BuildRequires:	pkgconfig(sdl)
 BuildRequires:	pkgconfig(ncurses)
@@ -48,20 +48,16 @@ drascula packages from non-free repository to play.
 %make NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf" STRIP="true"
 
 %install
-%__rm -rf %{buildroot}
 %makeinstall_std STRIP="true"
 
-%__install -m644 dists/%{name}.desktop -D %{buildroot}%{_datadir}/applications/%{name}.desktop
+install -m644 dists/%{name}.desktop -D %{buildroot}%{_datadir}/applications/%{name}.desktop
 
-%__install -m644 dists/maemo/scummvm48.png -D %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
-%__install -m644 dists/maemo/scummvm64.png -D %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
-%__install -m644 dists/motomagx/pep/scummvm_big_usr.png -D %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
-%__install -m644 icons/scummvm.svg -D %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
+install -m644 dists/maemo/scummvm48.png -D %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
+install -m644 dists/maemo/scummvm64.png -D %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
+install -m644 dists/motomagx/pep/scummvm_big_usr.png -D %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
+install -m644 icons/scummvm.svg -D %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
-%__mkdir_p %{buildroot}%{_datadir}/%{name}
-
-%clean
-%__rm -rf %{buildroot}
+mkdir -p %{buildroot}%{_datadir}/%{name}
 
 %files
 %doc %{_docdir}/%{name}
