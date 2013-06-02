@@ -1,12 +1,11 @@
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
-Version:	1.5.0
+Version:	1.6.0
 Release:	1
 Group:		Games/Adventure
 License:	GPLv2+ and LGPLv2+
 Url:		http://scummvm.sourceforge.net/
 Source0:	http://garr.dl.sourceforge.net/project/scummvm/scummvm/%{version}/scummvm-%{version}.tar.bz2
-Patch0:		scummvm-1.5.0-dont-strip.patch
 BuildRequires:	pkgconfig(sdl)
 BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	pkgconfig(mad)
@@ -32,7 +31,6 @@ drascula packages from non-free repository to play.
 
 %prep
 %setup -q
-%apply_patches
 
 %build
 %global optflags %{optflags} -O3 -ffast-math
