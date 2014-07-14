@@ -1,19 +1,19 @@
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
-Version:	1.6.0
+Version:	1.7.0
 Release:	1
+License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
-License:	GPLv2+ and LGPLv2+
 Url:		http://scummvm.sourceforge.net/
 Source0:	http://garr.dl.sourceforge.net/project/scummvm/scummvm/%{version}/scummvm-%{version}.tar.bz2
-BuildRequires:	pkgconfig(sdl)
-BuildRequires:	pkgconfig(ncurses)
-BuildRequires:	pkgconfig(mad)
-BuildRequires:	pkgconfig(vorbis)
-BuildRequires:	pkgconfig(libmpeg2)
+BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(fluidsynth)
-BuildRequires:	nasm
+BuildRequires:	pkgconfig(libmpeg2)
+BuildRequires:	pkgconfig(mad)
+BuildRequires:	pkgconfig(ncurses)
+BuildRequires:	pkgconfig(sdl)
+BuildRequires:	pkgconfig(vorbis)
 
 %description
 ScummVM is an implementation of LucasArts S.C.U.M.M.
@@ -29,11 +29,12 @@ and "Drascula: The Vampire Strikes Back" have been released by their
 developers. Install beneath-a-steel-sky, flight-of-the-amazon-queen and
 drascula packages from non-free repository to play.
 
+#----------------------------------------------------------------------------
+
 %prep
 %setup -q
 
 %build
-%global optflags %{optflags} -O3 -ffast-math
 %setup_compile_flags
 ./configure	--prefix=%{_prefix} \
 		--bindir=%{_gamesbindir} \
