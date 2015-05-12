@@ -36,6 +36,12 @@ drascula packages from non-free repository to play.
 
 %build
 %setup_compile_flags
+
+%ifarch %{ix86}
+# gold fails on i586
+export CXX="%{__cxx} -fuse-ld=bfd"
+%endif
+
 ./configure	--prefix=%{_prefix} \
 		--bindir=%{_gamesbindir} \
 		--mandir=%{_mandir} \
