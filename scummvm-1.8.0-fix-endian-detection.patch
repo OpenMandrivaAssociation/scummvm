@@ -1,0 +1,11 @@
+--- scummvm-1.8.0/configure.omv~	2016-04-18 00:25:25.239084629 +0200
++++ scummvm-1.8.0/configure	2016-04-18 00:25:31.125994275 +0200
+@@ -1913,7 +1913,7 @@ unsigned short ebcdic_mm[] = { 0xC2C9, 0
+ void _ebcdic() { char* s = (char*) ebcdic_mm; s = (char*) ebcdic_ii; }
+ int main() { _ascii (); _ebcdic (); return 0; }
+ EOF
+-$CXX $CXXFLAGS -c -o $TMPO.o tmp_endianness_check.cpp
++$CXX $CXXFLAGS -fno-lto -c -o $TMPO.o tmp_endianness_check.cpp
+ if $_strings $TMPO.o | grep BIGenDianSyS >/dev/null; then
+ 	_endian=big
+ elif $_strings $TMPO.o | grep LiTTleEnDian >/dev/null; then

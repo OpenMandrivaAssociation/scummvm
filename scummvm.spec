@@ -1,11 +1,13 @@
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
-Version:	1.7.0
-Release:	2
+Version:	1.8.0
+Release:	1
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.sourceforge.net/
-Source0:	http://garr.dl.sourceforge.net/project/scummvm/scummvm/%{version}/scummvm-%{version}.tar.bz2
+Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
+Patch0:		scummvm-1.8.0-fix-endian-detection.patch
+Patch1:		scummvm-1.8.0-formatstrings.patch
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(fluidsynth)
@@ -33,6 +35,7 @@ drascula packages from non-free repository to play.
 
 %prep
 %setup -q
+%apply_patches
 
 %build
 %setup_compile_flags
@@ -49,6 +52,7 @@ export CXX="%{__cxx} -fuse-ld=bfd"
 		--enable-release \
 		--enable-verbose-build \
 		--enable-opengl \
+		--enable-c++11 \
 		--enable-all-engines
 %make NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf" STRIP="true"
 
