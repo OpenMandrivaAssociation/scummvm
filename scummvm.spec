@@ -1,20 +1,19 @@
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
-Version:	1.8.0
+Version:	2.0.0
 Release:	1
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
-Url:		http://scummvm.sourceforge.net/
+Url:		http://scummvm.org/
 Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
 Patch0:		scummvm-1.8.0-fix-endian-detection.patch
-Patch1:		scummvm-1.8.0-formatstrings.patch
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(fluidsynth)
 BuildRequires:	pkgconfig(libmpeg2)
 BuildRequires:	pkgconfig(mad)
 BuildRequires:	pkgconfig(ncurses)
-BuildRequires:	pkgconfig(sdl)
+BuildRequires:	pkgconfig(sdl2)
 BuildRequires:	pkgconfig(vorbis)
 
 %description
@@ -51,7 +50,6 @@ export CXX="%{__cxx} -fuse-ld=bfd"
 		--datadir=%{_gamesdatadir} \
 		--enable-release \
 		--enable-verbose-build \
-		--enable-opengl \
 		--enable-c++11 \
 		--enable-all-engines
 %make NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf" STRIP="true"
@@ -75,5 +73,6 @@ mkdir -p %{buildroot}%{_datadir}/%{name}
 %{_datadir}/pixmaps/%{name}.xpm
 %{_gamesdatadir}/*
 %{_datadir}/applications/%{name}.desktop
+%{_datadir}/appdata/%{name}.appdata.xml
 %dir %{_datadir}/%{name}
 %{_datadir}/icons/hicolor/*/apps/%{name}.*
