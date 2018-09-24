@@ -1,2 +1,4 @@
-sources:
+removed_sources:
   scummvm-1.8.0.tar.xz: 76c65df484f53f9d57034f6027ac7635491b4bd1
+sources:
+  scummvm-2.0.0.tar.xz: ef6dcaaa09ea31839670b0de44927b3dd25b75e3
