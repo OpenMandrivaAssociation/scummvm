@@ -6,7 +6,6 @@ License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.org/
 Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
-Patch0:		scummvm-1.8.0-fix-endian-detection.patch
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(fluidsynth)
