@@ -1,4 +1,4 @@
-%define _disable_lto 1
+#define _disable_lto 1
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
