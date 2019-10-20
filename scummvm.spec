@@ -1,3 +1,5 @@
+%define _disable_lto 1
+
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
 Version:	2.1.0
@@ -6,7 +8,7 @@ License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.org/
 Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
-Patch0:		scummvm-2.1-fix-openmandriva.patch
+#Patch0:		scummvm-2.1-fix-openmandriva.patch
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(fluidsynth)
@@ -34,7 +36,7 @@ drascula packages from non-free repository to play.
 
 %prep
 %setup -q
-%autopatch -p0
+#autopatch -p0
 
 %build
 %setup_compile_flags
