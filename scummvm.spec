@@ -6,6 +6,7 @@ License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.org/
 Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
+Patch0:		scummvm-2.1-fix-openmandriva.patch
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(fluidsynth)
@@ -33,7 +34,7 @@ drascula packages from non-free repository to play.
 
 %prep
 %setup -q
-%apply_patches
+%autopatch -p0
 
 %build
 %setup_compile_flags
