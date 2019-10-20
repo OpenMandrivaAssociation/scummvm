@@ -54,7 +54,7 @@ export CXX="%{__cxx} -fuse-ld=bfd"
 		--enable-verbose-build \
 		--enable-c++11 \
 		--enable-all-engines
-%make NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf" STRIP="true"
+%make -j1 NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf" STRIP="true"
 
 %install
 %makeinstall_std STRIP="true"
