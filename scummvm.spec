@@ -1,4 +1,10 @@
-#define _disable_lto 1
+# As of 2.1.0 LTO should be disabled or build error apperars: Checking endianness... unknown
+# fixing it by sed or patch (applied previous to ver 1.8.0) or new wont work due to segmentation fault
+#dwp -e scummvm
+#make: *** [Makefile.common:94: scummvm.dwp] Segmentation fault (core dumped)
+# Solution = build without patch and LTO. Alternatively you can try with GCC (angry)
+
+%define _disable_lto 1
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
@@ -8,7 +14,6 @@ License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.org/
 Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
-Patch0:		scummvm-2.1-fix-openmandriva.patch
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(fluidsynth)
@@ -54,10 +59,10 @@ export CXX="%{__cxx} -fuse-ld=bfd"
 		--enable-verbose-build \
 		--enable-c++11 \
 		--enable-all-engines
-%make -j1 NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf" STRIP="true"
+%make_build NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf" STRIP="true"
 
 %install
-%makeinstall_std STRIP="true"
+%make_install STRIP="true"
 
 install -m644 dists/%{name}.desktop -D %{buildroot}%{_datadir}/applications/%{name}.desktop
 
