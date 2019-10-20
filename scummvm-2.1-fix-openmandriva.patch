@@ -7,7 +7,7 @@ Index: configure
  int main() { _ascii (); _ebcdic (); return 0; }
  EOF
 -$CXX $LDFLAGS $CXXFLAGS -o $TMPO$HOSTEXEEXT tmp_endianness_check.cpp
-+$CXX $CXXFLAGS -fno-lto -c -o $TMPO.o tmp_endianness_check.cpp
++$CXX $CXXFLAGS -fno-lto -c -o $TMPO$HOSTEXEEXT tmp_endianness_check.cpp
  if $_strings $TMPO$HOSTEXEEXT | grep BIGenDianSyS >/dev/null; then
  	_endian=big
  elif $_strings $TMPO$HOSTEXEEXT | grep LiTTleEnDian >/dev/null; then
