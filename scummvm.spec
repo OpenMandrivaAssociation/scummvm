@@ -3,13 +3,14 @@
 #dwp -e scummvm
 #make: *** [Makefile.common:94: scummvm.dwp] Segmentation fault (core dumped)
 # Solution = build without patch and LTO. Alternatively you can try with GCC (angry)
+# Workaround suggested by crazy - apply drop-split-dwarf-want-lto and reenable LTO. LTO enable by sed.
 
 #define _disable_lto 1
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
 Version:	2.1.0
-Release:	1
+Release:	2
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.org/
@@ -45,6 +46,7 @@ drascula packages from non-free repository to play.
 %autopatch -p1
 
 %build
+# Sed to fix endianness check fail caused by LTO enabled.
 sed -i '/tmp_endianness_check.cpp/ s/$CXXFLAGS/$CXXFLAGS -fno-lto -O0/' configure
 %setup_compile_flags
 
