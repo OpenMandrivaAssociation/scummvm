@@ -45,6 +45,7 @@ drascula packages from non-free repository to play.
 %autopatch -p1
 
 %build
+sed -i '/tmp_endianness_check.cpp/ s/$CXXFLAGS/$CXXFLAGS -fno-lto -O0/' configure
 %setup_compile_flags
 
 #ifarch %{ix86}
