@@ -4,7 +4,7 @@
 #make: *** [Makefile.common:94: scummvm.dwp] Segmentation fault (core dumped)
 # Solution = build without patch and LTO. Alternatively you can try with GCC (angry)
 
-%define _disable_lto 1
+#define _disable_lto 1
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
@@ -14,6 +14,7 @@ License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.org/
 Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
+Patch0:		drop-split-dwarf-want-lto.patch
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(fluidsynth)
@@ -41,7 +42,7 @@ drascula packages from non-free repository to play.
 
 %prep
 %setup -q
-%autopatch -p0
+%autopatch -p1
 
 %build
 %setup_compile_flags
