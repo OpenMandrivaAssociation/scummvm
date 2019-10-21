@@ -1,0 +1,21 @@
+diff -Naur scummvm-2.1.0/configure scummvm-2.1.0-p/configure
+--- scummvm-2.1.0/configure	2019-10-04 23:41:31.000000000 +0200
++++ scummvm-2.1.0-p/configure	2019-10-21 03:27:43.501973021 +0200
+@@ -2214,17 +2214,6 @@
+ 	echo_n -- "$debug_mode"
+ 
+ 	echo "int main() { return 0; }" > $TMPC
+-	if `which $_dwp >/dev/null 2>&1` && cc_check_no_clean $debug_mode -gsplit-dwarf && `$_dwp -e $TMPO -o /dev/null >/dev/null 2>&1`; then
+-		append_var CXXFLAGS "-gsplit-dwarf"
+-		add_line_to_config_mk "SPLIT_DWARF = 1"
+-		echo_n -- " + split DWARF"
+-		if cc_check_no_clean $debug_mode -gsplit-dwarf -fuse-ld=gold -Wl,--gdb-index; then
+-			append_var LDFLAGS "-fuse-ld=gold"
+-			append_var LDFLAGS "-Wl,--gdb-index"
+-			echo_n -- " + Gold"
+-		fi
+-	fi
+-
+ 	if cc_check_no_clean $debug_mode -fvar-tracking-assignments; then
+ 		append_var CXXFLAGS "-fvar-tracking-assignments"
+ 		echo_n -- " + var tracking"
