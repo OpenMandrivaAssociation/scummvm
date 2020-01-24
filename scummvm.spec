@@ -46,6 +46,8 @@ drascula packages from non-free repository to play.
 %autopatch -p1
 
 %build
+export CC=gcc
+export CXX=g++
 # Sed to fix endianness check fail caused by LTO enabled.
 sed -i '/tmp_endianness_check.cpp/ s/$CXXFLAGS/$CXXFLAGS -fno-lto -O0/' configure
 %setup_compile_flags
