@@ -1,13 +1,15 @@
-commit 8593a9e1e4e8dd1f5dfac9b1304a417df9a742e6
-Author: D G Turner <digitall@scummvm.org>
-Date:   Sun Dec 15 22:22:20 2019 +0000
+From 8593a9e1e4e8dd1f5dfac9b1304a417df9a742e6 Mon Sep 17 00:00:00 2001
+From: D G Turner <digitall@scummvm.org>
+Date: Sun, 15 Dec 2019 22:22:20 +0000
+Subject: [PATCH] AUDIO: Fix Compilation Against Fluidsynth v2.1+
 
-    AUDIO: Fix Compilation Against Fluidsynth v2.1+
-    
-    This is as reported by eriktorbjorn.
+This is as reported by eriktorbjorn.
+---
+ audio/softsynth/fluidsynth.cpp | 5 +++++
+ 1 file changed, 5 insertions(+)
 
 diff --git a/audio/softsynth/fluidsynth.cpp b/audio/softsynth/fluidsynth.cpp
-index 4034b2ffc3..33a74a1524 100644
+index 4034b2ffc36..33a74a15247 100644
 --- a/audio/softsynth/fluidsynth.cpp
 +++ b/audio/softsynth/fluidsynth.cpp
 @@ -35,7 +35,12 @@
