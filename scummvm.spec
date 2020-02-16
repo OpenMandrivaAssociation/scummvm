@@ -9,13 +9,17 @@
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
-Version:	2.1.0
-Release:	2
+Version:	2.1.1
+Release:	1
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.org/
 Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
 Patch0:		drop-split-dwarf-want-lto.patch
+# FIX from upstream to compiling with fluidsynth 2.1+
+Patch1:		8593a9e1e4e8dd1f5dfac9b1304a417df9a742e6.patch
+Patch2:		68758a879e0c8ecc0d40962516d4e808aa4e15e5.patch
+
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(fluidsynth)
@@ -46,6 +50,8 @@ drascula packages from non-free repository to play.
 %autopatch -p1
 
 %build
+#export CC=gcc
+#export CXX=g++
 # Sed to fix endianness check fail caused by LTO enabled.
 sed -i '/tmp_endianness_check.cpp/ s/$CXXFLAGS/$CXXFLAGS -fno-lto -O0/' configure
 %setup_compile_flags
