@@ -18,7 +18,7 @@ Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
 Patch0:		drop-split-dwarf-want-lto.patch
 # FIX from upstream to compiling with fluidsynth 2.1+
 Patch1:		68758a879e0c8ecc0d40962516d4e808aa4e15e5.patch
-Patch2:		8593a9e1e4e8dd1f5dfac9b1304a417df9a742e6.patch
+#Patch2:		8593a9e1e4e8dd1f5dfac9b1304a417df9a742e6.patch
 
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
