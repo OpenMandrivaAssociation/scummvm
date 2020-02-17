@@ -5,7 +5,7 @@
 # Solution = build without patch and LTO. Alternatively you can try with GCC (angry)
 # Workaround suggested by crazy - apply drop-split-dwarf-want-lto and reenable LTO. LTO enable by sed.
 
-#define _disable_lto 1
+%define _disable_lto 1
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
