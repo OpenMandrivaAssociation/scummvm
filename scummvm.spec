@@ -87,6 +87,6 @@ mkdir -p %{buildroot}%{_datadir}/%{name}
 %{_datadir}/pixmaps/%{name}.xpm
 %{_gamesdatadir}/*
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/appdata/%{name}.appdata.xml
+#{_datadir}/appdata/%{name}.appdata.xml
 %dir %{_datadir}/%{name}
 %{_datadir}/icons/hicolor/*/apps/%{name}.*
