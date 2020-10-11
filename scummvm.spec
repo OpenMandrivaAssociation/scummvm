@@ -9,16 +9,13 @@
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
-Version:	2.1.1
+Version:	2.2.0
 Release:	1
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.org/
 Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
 Patch0:		drop-split-dwarf-want-lto.patch
-# FIX from upstream to compiling with fluidsynth 2.1+
-Patch1:		8593a9e1e4e8dd1f5dfac9b1304a417df9a742e6.patch
-Patch2:		68758a879e0c8ecc0d40962516d4e808aa4e15e5.patch
 
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
@@ -78,7 +75,7 @@ install -m644 dists/%{name}.desktop -D %{buildroot}%{_datadir}/applications/%{na
 
 install -m644 dists/maemo/scummvm48.png -D %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
 install -m644 dists/maemo/scummvm64.png -D %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
-install -m644 dists/motomagx/pep/scummvm_big_usr.png -D %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
+#install -m644 dists/motomagx/pep/scummvm_big_usr.png -D %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
 install -m644 icons/scummvm.svg -D %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
 
 mkdir -p %{buildroot}%{_datadir}/%{name}
@@ -90,6 +87,6 @@ mkdir -p %{buildroot}%{_datadir}/%{name}
 %{_datadir}/pixmaps/%{name}.xpm
 %{_gamesdatadir}/*
 %{_datadir}/applications/%{name}.desktop
-%{_datadir}/appdata/%{name}.appdata.xml
+%{_datadir}/metainfo/scummvm.appdata.xml
 %dir %{_datadir}/%{name}
 %{_datadir}/icons/hicolor/*/apps/%{name}.*
