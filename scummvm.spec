@@ -16,6 +16,7 @@ Group:		Games/Adventure
 Url:		http://scummvm.org/
 Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
 Patch0:		drop-split-dwarf-want-lto.patch
+Patch1:		0006-FLUIDSYNTH-Fix-compilation-with-Fluidsynth-2.2.patch
 
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
