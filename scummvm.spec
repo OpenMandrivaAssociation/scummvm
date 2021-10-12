@@ -9,19 +9,13 @@
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
-Version:	2.2.0
-Release:	2
+Version:	2.5.0
+Release:	1
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.org/
 Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
-Patch0:		drop-split-dwarf-want-lto.patch
-Patch1:         0001-FLUIDSYNTH-Make-FluidSynth-logging-less-noisy-by-default.patch
-Patch2:         0002-FLUIDSYNTH-Swapped-debug-levels-for-FLUID_WARN-and-FLUID_INFO.patch
-Patch3:         0003-FLUIDSYNTH-Fix-build.patch
-Patch4:         0004-AUDIO-Fix-compilation-with-Fluidsynth2.patch
-Patch5:         0005-FLUIDSYNTH-Simplify-FluidSynth-version-check.patch
-Patch6:		0006-FLUIDSYNTH-Fix-compilation-with-Fluidsynth-2.2.patch
+#Patch0:		drop-split-dwarf-want-lto.patch
 
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
