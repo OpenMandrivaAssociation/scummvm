@@ -64,7 +64,6 @@ sed -i '/tmp_endianness_check.cpp/ s/$CXXFLAGS/$CXXFLAGS -fno-lto -O0/' configur
 		--datadir=%{_gamesdatadir} \
 		--enable-release \
 		--enable-verbose-build \
-		--enable-c++11 \
 		--enable-all-engines
 %make_build NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf" STRIP="true"
 
