@@ -9,7 +9,7 @@
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
-Version:	2.5.1
+Version:	2.6.0
 Release:	1
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
@@ -64,7 +64,6 @@ sed -i '/tmp_endianness_check.cpp/ s/$CXXFLAGS/$CXXFLAGS -fno-lto -O0/' configur
 		--datadir=%{_gamesdatadir} \
 		--enable-release \
 		--enable-verbose-build \
-		--enable-c++11 \
 		--enable-all-engines
 %make_build NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf" STRIP="true"
 
