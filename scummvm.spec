@@ -1,11 +1,13 @@
+%define snapshot 20230616
+
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
-Version:	2.7.0
-Release:	2
+Version:	2.8.0
+Release:	%{?snapshot:0.%{snapshot}.}1
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.org/
-Source0:	http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz
+Source0:	%{?snapshot:https://github.com/scummvm/scummvm/archive/refs/heads/master.tar.gz#/%{name}-%{snapshot}.tar.gz}%{!?snapshot:http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz}
 #Patch0:		drop-split-dwarf-want-lto.patch
 
 BuildRequires:	nasm
@@ -34,8 +36,7 @@ drascula packages from non-free repository to play.
 #----------------------------------------------------------------------------
 
 %prep
-%setup -q
-%autopatch -p1
+%autosetup -p1 -n %{name}-%{?snapshot:master}%{!?snapshot:%{version}}
 
 %build
 #export CC=gcc
@@ -61,22 +62,15 @@ sed -i '/tmp_endianness_check.cpp/ s/$CXXFLAGS/$CXXFLAGS -fno-lto -O0/' configur
 %install
 %make_install STRIP="true"
 
-install -m644 dists/%{name}.desktop -D %{buildroot}%{_datadir}/applications/%{name}.desktop
-
-install -m644 dists/maemo/scummvm48.png -D %{buildroot}%{_datadir}/icons/hicolor/48x48/apps/%{name}.png
-install -m644 dists/maemo/scummvm64.png -D %{buildroot}%{_datadir}/icons/hicolor/64x64/apps/%{name}.png
-#install -m644 dists/motomagx/pep/scummvm_big_usr.png -D %{buildroot}%{_datadir}/icons/hicolor/32x32/apps/%{name}.png
-install -m644 icons/scummvm.svg -D %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/%{name}.svg
-
 mkdir -p %{buildroot}%{_datadir}/%{name}
 
 %files
 %doc %{_docdir}/%{name}
 %{_gamesbindir}/*
 %{_mandir}/*/*
-%{_datadir}/pixmaps/%{name}.xpm
 %{_gamesdatadir}/*
-%{_datadir}/applications/%{name}.desktop
-%{_datadir}/metainfo/scummvm.appdata.xml
+%{_datadir}/applications/org.scummvm.scummvm.desktop
+%{_datadir}/metainfo/org.scummvm.scummvm.metainfo.xml
 %dir %{_datadir}/%{name}
-%{_datadir}/icons/hicolor/*/apps/%{name}.*
+%{_datadir}/icons/hicolor/scalable/apps/org.scummvm.scummvm.svg
+%{_datadir}/pixmaps/org.scummvm.scummvm.xpm
