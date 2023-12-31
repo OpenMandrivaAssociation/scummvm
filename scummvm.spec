@@ -1,4 +1,4 @@
-%define snapshot 20230616
+#define snapshot 20230616
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
@@ -7,7 +7,7 @@ Release:	%{?snapshot:0.%{snapshot}.}1
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.org/
-Source0:	%{?snapshot:https://github.com/scummvm/scummvm/archive/refs/heads/master.tar.gz#/%{name}-%{snapshot}.tar.gz}%{!?snapshot:http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.xz}
+Source0:	%{?snapshot:https://github.com/scummvm/scummvm/archive/refs/heads/master.tar.gz#/%{name}-%{snapshot}.tar.gz}%{!?snapshot:http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.gz}
 #Patch0:		drop-split-dwarf-want-lto.patch
 
 BuildRequires:	nasm
