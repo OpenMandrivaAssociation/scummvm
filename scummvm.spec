@@ -1,4 +1,4 @@
-%define snapshot 20230616
+#define snapshot 20230616
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
