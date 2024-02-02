@@ -1,9 +1,11 @@
 #define snapshot 20230616
+# Plugins reference symbols from scummvm
+%define _disable_ld_no_undefined 1
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
 Version:	2.8.0
-Release:	%{?snapshot:0.%{snapshot}.}1
+Release:	%{?snapshot:0.%{snapshot}.}2
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		http://scummvm.org/
@@ -17,7 +19,20 @@ BuildRequires:	pkgconfig(libmpeg2)
 BuildRequires:	pkgconfig(mad)
 BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	pkgconfig(sdl2)
+BuildRequires:	pkgconfig(SDL2_net)
 BuildRequires:	pkgconfig(vorbis)
+BuildRequires:	pkgconfig(theora)
+BuildRequires:	pkgconfig(libjpeg)
+BuildRequires:	pkgconfig(libpng)
+BuildRequires:	giflib-devel
+BuildRequires:	pkgconfig(vpx)
+BuildRequires:	pkgconfig(liba52)
+BuildRequires:	pkgconfig(libcurl)
+BuildRequires:	pkgconfig(libmikmod)
+BuildRequires:	pkgconfig(freetype2)
+BuildRequires:	pkgconfig(lua)
+# Optional, but sadly main can't depend on restricted
+#BuildRequires:	pkgconfig(faad2)
 
 %description
 ScummVM is an implementation of LucasArts S.C.U.M.M.
@@ -56,6 +71,10 @@ sed -i '/tmp_endianness_check.cpp/ s/$CXXFLAGS/$CXXFLAGS -fno-lto -O0/' configur
 		--datadir=%{_gamesdatadir} \
 		--enable-release \
 		--enable-verbose-build \
+		--enable-plugins \
+		--default-dynamic \
+		--enable-optimizations \
+		--opengl-mode=any \
 		--enable-all-engines
 %make_build NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf" STRIP="true"
 
@@ -74,3 +93,6 @@ mkdir -p %{buildroot}%{_datadir}/%{name}
 %dir %{_datadir}/%{name}
 %{_datadir}/icons/hicolor/scalable/apps/org.scummvm.scummvm.svg
 %{_datadir}/pixmaps/org.scummvm.scummvm.xpm
+%dir %{_prefix}/lib/scummvm
+# FIXME split the various engines into subpackages
+%{_prefix}/lib/scummvm/*
