@@ -8,7 +8,7 @@ Version:	2.8.1
 Release:	%{?snapshot:0.%{snapshot}.}1
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
-Url:		http://scummvm.org/
+Url:		https://scummvm.org/
 Source0:	%{?snapshot:https://github.com/scummvm/scummvm/archive/refs/heads/master.tar.gz#/%{name}-%{snapshot}.tar.gz}%{!?snapshot:http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.gz}
 #Patch0:		drop-split-dwarf-want-lto.patch
 
