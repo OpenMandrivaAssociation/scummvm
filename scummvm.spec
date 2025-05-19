@@ -5,7 +5,7 @@
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
 Version:	2.9.0
-Release:	%{?snapshot:0.%{snapshot}.}2
+Release:	%{?snapshot:0.%{snapshot}.}3
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		https://scummvm.org/
