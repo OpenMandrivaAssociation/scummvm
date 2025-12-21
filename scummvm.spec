@@ -12,6 +12,11 @@ Url:		https://scummvm.org/
 Source0:	%{?snapshot:https://github.com/scummvm/scummvm/archive/refs/heads/master.tar.gz#/%{name}-%{snapshot}.tar.gz}%{!?snapshot:http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.gz}
 #Patch0:		drop-split-dwarf-want-lto.patch
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	nasm
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(fluidsynth)
