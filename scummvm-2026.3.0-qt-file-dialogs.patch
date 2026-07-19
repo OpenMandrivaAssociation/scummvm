@@ -1,0 +1,330 @@
+diff -Nru scummvm-2026.3.0.orig/backends/dialogs/qt/qt-dialogs.cpp scummvm-2026.3.0/backends/dialogs/qt/qt-dialogs.cpp
+--- scummvm-2026.3.0.orig/backends/dialogs/qt/qt-dialogs.cpp	1970-01-01 01:00:00.000000000 +0100
++++ scummvm-2026.3.0/backends/dialogs/qt/qt-dialogs.cpp	2026-07-18 22:11:32.266611522 +0200
+@@ -0,0 +1,130 @@
++/* ScummVM - Graphic Adventure Engine
++ *
++ * ScummVM is the legal property of its developers, whose names
++ * are too numerous to list here. Please refer to the COPYRIGHT
++ * file distributed with this source distribution.
++ *
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation, either version 3 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ *
++ */
++
++// Qt headers pull in many system APIs that ScummVM otherwise forbids.
++#define FORBIDDEN_SYMBOL_ALLOW_ALL
++
++#include "common/scummsys.h"
++
++#if defined(POSIX) && defined(USE_SYSDIALOGS) && defined(USE_QT)
++
++#include "backends/dialogs/qt/qt-dialogs.h"
++
++#include "common/config-manager.h"
++#include "common/events.h"
++#include "common/translation.h"
++
++#include <locale.h>
++
++#include <QApplication>
++#include <QFileDialog>
++#include <QDir>
++#include <QTimer>
++
++namespace {
++
++QApplication *ensureQtApplication() {
++	if (QCoreApplication::instance())
++		return qobject_cast<QApplication *>(QCoreApplication::instance());
++
++	// QApplication keeps references to argc/argv for its lifetime.
++	static int argc = 1;
++	static char appName[] = "scummvm";
++	static char *argv[] = { appName, nullptr };
++
++	// Qt 6 enables high-DPI scaling by default.
++	return new QApplication(argc, argv);
++}
++
++} // End of anonymous namespace
++
++Common::DialogManager::DialogResult QtDialogManager::showFileBrowser(const Common::U32String &title, Common::FSNode &choice, bool isDirBrowser) {
++	QApplication *app = ensureQtApplication();
++	if (!app)
++		return kDialogError;
++
++	DialogResult result = kDialogCancel;
++
++	const Common::String utf8Title = title.encode();
++	QString qTitle = QString::fromUtf8(utf8Title.c_str());
++
++	QString startPath;
++	if (ConfMan.hasKey("browser_lastpath")) {
++		const Common::String native = ConfMan.getPath("browser_lastpath").toString(Common::Path::kNativeSeparator);
++		startPath = QString::fromUtf8(native.c_str());
++	}
++
++	// Let Qt/desktop use the user locale for localized folder names.
++	setlocale(LC_ALL, "");
++
++	beginDialog();
++
++	// Keep the ScummVM window responsive while the modal dialog is open.
++	QTimer pump;
++	QObject::connect(&pump, &QTimer::timeout, []() {
++		Common::Event dummy;
++		while (g_system->getEventManager()->pollEvent(dummy)) {
++		}
++		g_system->updateScreen();
++	});
++	pump.start(16);
++
++	QFileDialog dialog(nullptr, qTitle, startPath);
++	if (isDirBrowser) {
++		dialog.setFileMode(QFileDialog::Directory);
++		dialog.setOption(QFileDialog::ShowDirsOnly, true);
++	} else {
++		dialog.setFileMode(QFileDialog::ExistingFile);
++	}
++
++	// Mirror the GTK backend's hidden-files preference when using Qt's
++	// non-native dialog. Native dialogs usually expose their own control.
++	if (ConfMan.getBool("gui_browser_show_hidden", Common::ConfigManager::kApplicationDomain)) {
++		dialog.setFilter(dialog.filter() | QDir::Hidden | QDir::System);
++	}
++
++	dialog.setLabelText(QFileDialog::Accept, QString::fromUtf8(_("Choose").encode().c_str()));
++	dialog.setLabelText(QFileDialog::Reject, QString::fromUtf8(_("Cancel").encode().c_str()));
++
++	if (dialog.exec() == QDialog::Accepted) {
++		const QStringList files = dialog.selectedFiles();
++		if (!files.isEmpty()) {
++			const QByteArray pathUtf8 = files.first().toUtf8();
++			Common::Path path(pathUtf8.constData(), Common::Path::kNativeSeparator);
++			choice = Common::FSNode(path);
++			ConfMan.setPath("browser_lastpath", path);
++			result = kDialogOk;
++		}
++	}
++
++	pump.stop();
++
++	// Restore default C locale (see bugs #6434 and #14196).
++	setlocale(LC_ALL, "C");
++
++	// Drain any residual Qt events so they do not stick around.
++	app->processEvents();
++
++	endDialog();
++	return result;
++}
++
++#endif
+diff -Nru scummvm-2026.3.0.orig/backends/dialogs/qt/qt-dialogs.h scummvm-2026.3.0/backends/dialogs/qt/qt-dialogs.h
+--- scummvm-2026.3.0.orig/backends/dialogs/qt/qt-dialogs.h	1970-01-01 01:00:00.000000000 +0100
++++ scummvm-2026.3.0/backends/dialogs/qt/qt-dialogs.h	2026-07-18 22:11:18.234035741 +0200
+@@ -0,0 +1,37 @@
++/* ScummVM - Graphic Adventure Engine
++ *
++ * ScummVM is the legal property of its developers, whose names
++ * are too numerous to list here. Please refer to the COPYRIGHT
++ * file distributed with this source distribution.
++ *
++ * This program is free software: you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation, either version 3 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
++ *
++ */
++
++#ifndef BACKEND_QT_DIALOGS_H
++#define BACKEND_QT_DIALOGS_H
++
++#if defined(POSIX) && defined(USE_SYSDIALOGS) && defined(USE_QT)
++
++#include "common/fs.h"
++#include "common/dialogs.h"
++
++class QtDialogManager : public Common::DialogManager {
++public:
++	virtual DialogResult showFileBrowser(const Common::U32String &title, Common::FSNode &choice, bool isDirBrowser);
++};
++
++#endif
++
++#endif // BACKEND_QT_DIALOGS_H
+diff -Nru scummvm-2026.3.0.orig/backends/module.mk scummvm-2026.3.0/backends/module.mk
+--- scummvm-2026.3.0.orig/backends/module.mk	2026-06-20 17:59:43.000000000 +0200
++++ scummvm-2026.3.0/backends/module.mk	2026-07-18 22:11:32.266504861 +0200
+@@ -288,6 +288,14 @@
+ 	taskbar/unity/unity-taskbar.o \
+ 	dialogs/gtk/gtk-dialogs.o
+ 
++ifdef USE_QT
++MODULE_OBJS += \
++	dialogs/qt/qt-dialogs.o
++
++# Qt 6 needs C++17; QT_CFLAGS is set by configure (includes -std=c++17).
++$(MODULE)/dialogs/qt/qt-dialogs.o: CXXFLAGS += $(QT_CFLAGS)
++endif
++
+ ifdef USE_SPEECH_DISPATCHER
+ ifdef USE_TTS
+ MODULE_OBJS += \
+diff -Nru scummvm-2026.3.0.orig/backends/platform/sdl/posix/posix.cpp scummvm-2026.3.0/backends/platform/sdl/posix/posix.cpp
+--- scummvm-2026.3.0.orig/backends/platform/sdl/posix/posix.cpp	2026-06-20 17:59:43.000000000 +0200
++++ scummvm-2026.3.0/backends/platform/sdl/posix/posix.cpp	2026-07-18 22:11:32.266663153 +0200
+@@ -37,7 +37,11 @@
+ #include "backends/fs/posix/posix-fs-factory.h"
+ #include "backends/fs/posix/posix-fs.h"
+ #include "backends/taskbar/unity/unity-taskbar.h"
++#if defined(USE_SYSDIALOGS) && defined(USE_QT)
++#include "backends/dialogs/qt/qt-dialogs.h"
++#elif defined(USE_SYSDIALOGS) && defined(USE_GTK)
+ #include "backends/dialogs/gtk/gtk-dialogs.h"
++#endif
+ 
+ #ifdef USE_LINUXCD
+ #include "backends/audiocd/linux/linux-audiocd.h"
+@@ -69,7 +73,10 @@
+ 	_taskbarManager = new UnityTaskbarManager();
+ #endif
+ 
+-#if defined(USE_SYSDIALOGS) && defined(USE_GTK)
++#if defined(USE_SYSDIALOGS) && defined(USE_QT)
++	// Initialize dialog manager (prefer Qt over GTK)
++	_dialogManager = new QtDialogManager();
++#elif defined(USE_SYSDIALOGS) && defined(USE_GTK)
+ 	// Initialize dialog manager
+ 	_dialogManager = new GtkDialogManager();
+ #endif
+@@ -104,7 +111,7 @@
+ 	if (f == kFeatureOpenUrl)
+ 		return true;
+ #endif
+-#if defined(USE_SYSDIALOGS) && defined(USE_GTK)
++#if defined(USE_SYSDIALOGS) && (defined(USE_QT) || defined(USE_GTK))
+ 	if (f == kFeatureSystemBrowserDialog)
+ 		return true;
+ #endif
+diff -Nru scummvm-2026.3.0.orig/configure scummvm-2026.3.0/configure
+--- scummvm-2026.3.0.orig/configure	2026-06-20 17:59:43.000000000 +0200
++++ scummvm-2026.3.0/configure	2026-07-18 22:11:32.266805714 +0200
+@@ -195,6 +195,7 @@
+ _tts=auto
+ _osx_tts_backend=auto
+ _gtk=auto
++_qt=auto
+ _fribidi=auto
+ _discord=auto
+ _test_cxx11=no
+@@ -1203,6 +1204,8 @@
+   --with-gtk-prefix=DIR    prefix where gtk is installed (optional)
+   --disable-gtk            disable GTK dialog integration [autodetect]
+ 
++  --disable-qt             disable Qt dialog integration [autodetect]
++
+   --with-sndio-prefix=DIR  prefix where sndio is installed (optional)
+   --disable-sndio          disable sndio MIDI driver [autodetect]
+ 
+@@ -1388,6 +1391,8 @@
+ 	--disable-tts)                _tts=no                ;;
+ 	--enable-gtk)                 _gtk=yes               ;;
+ 	--disable-gtk)                _gtk=no                ;;
++	--enable-qt)                  _qt=yes               ;;
++	--disable-qt)                 _qt=no                ;;
+ 	--disable-imgui)              _imgui=no              ;;
+ 	--enable-imgui)               _imgui=yes             ;;
+ 	--opengl-mode=*)
+@@ -6623,6 +6628,59 @@
+ echo "$_gtk"
+ 
+ #
++# Check for Qt file dialogs (preferred over GTK on POSIX when available)
++#
++echocheck "qt"
++if test "$_dialogs" = no || test "$_pkg_config" = no; then
++	_qt=no
++else
++if test "$_qt" = auto ; then
++	_qt=no
++	case $_host_os in
++	mingw* | darwin* | amigaos* | morphos*)
++		# Platform-native dialogs are used elsewhere
++		;;
++	*)
++		if $_pkgconfig --exists Qt6Widgets 2>> "$TMPLOG"; then
++			QT_CFLAGS=`$_pkgconfig --cflags Qt6Widgets 2>> "$TMPLOG"`
++			QT_LIBS=`$_pkgconfig --libs Qt6Widgets 2>> "$TMPLOG"`
++			# Qt6 requires C++17
++			QT_CFLAGS="$QT_CFLAGS -std=c++17"
++			cat > $TMPC << EOF
++#include <QApplication>
++#include <QFileDialog>
++int main(int argc, char **argv) {
++	QApplication app(argc, argv);
++	return 0;
++}
++EOF
++			cc_check $QT_CFLAGS $QT_LIBS && _qt=yes
++		fi
++		;;
++	esac
++elif test "$_qt" = yes ; then
++	if $_pkgconfig --exists Qt6Widgets 2>> "$TMPLOG"; then
++		QT_CFLAGS=`$_pkgconfig --cflags Qt6Widgets 2>> "$TMPLOG"`
++		QT_LIBS=`$_pkgconfig --libs Qt6Widgets 2>> "$TMPLOG"`
++		QT_CFLAGS="$QT_CFLAGS -std=c++17"
++	else
++		echo "ERROR: Qt requested but Qt6Widgets was not found via pkg-config"
++		exit 1
++	fi
++fi
++
++if test "$_qt" = yes ; then
++	# Qt with reduce-relocations needs -fPIC; keep flags local to the dialog TU.
++	QT_CFLAGS="$QT_CFLAGS -fPIC"
++	add_line_to_config_mk "QT_CFLAGS := $QT_CFLAGS"
++	add_line_to_config_mk "QT_LIBS := $QT_LIBS"
++	append_var LIBS "$QT_LIBS"
++fi
++fi
++define_in_config_if_yes "$_qt" 'USE_QT'
++echo "$_qt"
++
++#
+ # Check for FreeType2 to be present
+ #
+ find_freetype() {
+@@ -7325,7 +7383,10 @@
+ 		_dialogs=yes
+ 		;;
+ 	*)
+-		if test "$_gtk" = yes; then
++		if test "$_qt" = yes; then
++			echo "qt"
++			_dialogs=yes
++		elif test "$_gtk" = yes; then
+ 			echo "gtk"
+ 			_dialogs=yes
+ 		else

@@ -4,17 +4,18 @@
 
 Summary:	An implementation of LucasArts's SCUMM interpreter
 Name:		scummvm
-Version:	2026.2.0
-Release:	%{?snapshot:0.%{snapshot}.}3
+Version:	2026.3.0
+Release:	%{?snapshot:0.%{snapshot}.}1
 License:	GPLv2+ and LGPLv2.1+
 Group:		Games/Adventure
 Url:		https://scummvm.org/
 Source0:	%{?snapshot:https://github.com/scummvm/scummvm/archive/refs/heads/master.tar.gz#/%{name}-%{snapshot}.tar.gz}%{!?snapshot:http://scummvm.org/frs/%{name}/%{version}/%{name}-%{version}.tar.gz}
-#Patch0:		drop-split-dwarf-want-lto.patch
+#Patch0:	drop-split-dwarf-want-lto.patch
+Patch1:		scummvm-2026.3.0-fix-format-security-sortpuzzle.patch
+Patch2:		scummvm-2026.3.0-qt-file-dialogs.patch
 
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libtool-base
 BuildRequires:	slibtool
 BuildRequires:	make
 BuildRequires:	nasm
@@ -36,8 +37,9 @@ BuildRequires:	pkgconfig(libcurl)
 BuildRequires:	pkgconfig(libmikmod)
 BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	pkgconfig(lua)
-# Optional, but sadly main can't depend on restricted
-#BuildRequires:	pkgconfig(faad2)
+# Qt 6 file dialogs
+BuildRequires:	pkgconfig(Qt6Widgets)
+BuildRequires:	pkgconfig(faad2)
 
 %description
 ScummVM is an implementation of LucasArts S.C.U.M.M.
@@ -59,16 +61,9 @@ drascula packages from non-free repository to play.
 %autosetup -p1 -n %{name}-%{?snapshot:master}%{!?snapshot:%{version}}
 
 %build
-#export CC=gcc
-#export CXX=g++
 # Sed to fix endianness check fail caused by LTO enabled.
 sed -i '/tmp_endianness_check.cpp/ s/$CXXFLAGS/$CXXFLAGS -fno-lto -O0/' configure
 %setup_compile_flags
-
-#ifarch %{ix86}
-# gold fails on i586
-#export CXX="%{__cxx} -fuse-ld=bfd"
-#endif
 
 ./configure	--prefix=%{_prefix} \
 		--bindir=%{_gamesbindir} \
@@ -80,7 +75,8 @@ sed -i '/tmp_endianness_check.cpp/ s/$CXXFLAGS/$CXXFLAGS -fno-lto -O0/' configur
 		--default-dynamic \
 		--enable-optimizations \
 		--opengl-mode=any \
-		--enable-all-engines
+		--enable-all-engines \
+		--enable-qt
 %make_build NASMFLAGS="-Ox -gdwarf2 -f elf -Fdwarf" STRIP="true"
 
 %install

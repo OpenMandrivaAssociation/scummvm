@@ -1,0 +1,17 @@
+From: OpenMandriva
+Subject: [PATCH] NANCY: Fix -Werror=format-security in SortPuzzle debug cheat
+
+debug() is a printf-style function; passing a non-literal format
+string fails with -Werror=format-security.
+
+--- a/engines/nancy/action/puzzle/sortpuzzle.cpp	2026-06-20 17:59:46.000000000 +0200
++++ b/engines/nancy/action/puzzle/sortpuzzle.cpp	2026-07-18 21:07:41.210199775 +0200
+@@ -293,7 +293,7 @@
+ 				const Cell &cur = _current[r][c];
+ 				line += Common::String::format("%d ", cur.value);
+ 			}
+-			debug(line.c_str());
++			debug("%s", line.c_str());
+ 		}
+ 		debug("-----");
+ 	}
